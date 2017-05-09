@@ -24,8 +24,6 @@ import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import com.example.job.SampleJob;
 import com.example.spring.AutowiringSpringBeanJobFactory;
 
-import liquibase.integration.spring.SpringLiquibase;
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -33,9 +31,10 @@ import java.util.Properties;
 @ConditionalOnProperty(name = "quartz.enabled")
 public class SchedulerConfig {
 
-    // injecting SpringLiquibase to ensure liquibase is already initialized and created the quartz tables:
+    private static final Logger LOG = LoggerFactory.getLogger(SchedulerConfig.class);
+
     @Bean
-    public JobFactory jobFactory(ApplicationContext applicationContext, SpringLiquibase springLiquibase) {
+    public JobFactory jobFactory(ApplicationContext applicationContext) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;
