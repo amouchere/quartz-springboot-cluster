@@ -28,8 +28,12 @@ public class WelcomeController {
     @Autowired
     private SchedulerFactoryBean schedulerFactory;
 
-    @RequestMapping(value = "/api/start/{jobName}/{groupName}/{quantity}/{interval}", method = RequestMethod.GET, produces = "application/json")
-    public Boolean addJob(@PathVariable("jobName") String jobName, @PathVariable("groupName") String groupName, @PathVariable("quantity") int quantity, @PathVariable("interval") int interval) {
+    @RequestMapping(value = "/api/start/{jobName}/{groupName}/{quantity}/{interval}",
+            method = RequestMethod.GET, produces = "application/json")
+    public Boolean addJob(@PathVariable("jobName") String jobName,
+                          @PathVariable("groupName") String groupName,
+                          @PathVariable("quantity") int quantity,
+                          @PathVariable("interval") int interval) {
         Scheduler scheduler = schedulerFactory.getScheduler();
         JobDetail job = newJob(SampleJob.class)
               .withIdentity(jobName, groupName)
