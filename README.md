@@ -24,12 +24,33 @@ mvn clean package
 mvn spring-boot:run -Dspring.profiles.active=ins1
 mvn spring-boot:run -Dspring.profiles.active=ins2
 ```
-或
+Or
 ```
 java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins1
 java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins2
 ```
 
-5. Open localhost:8080/api/start/{jobName}/{groupName}/{quantity}/{interval} in Browser (e.g. localhost:8080/api/start/job_1/group_1/10/5)
+5. Check the output of each instance, the jobs will be dispatch to each instance randomly.
 
-6. Confirm Service is called by Quartz. In console you should see "Hello World!" message(s)
+- In console you should see many "Hello" message(s) with job name.
+- When either of the instance down, all jobs will be switch to another one.
+- When new instance join the cluster, jobs will be automatically re-distributed.
+
+6. The demo also provide interface to add time-lapse job and to remove existing job.
+
+- Visit `<ip>:<port>/api/start/{jobName}/{groupName}/{quantity}/{interval}` to dynamically add job.
+
+E.g.
+```
+curl localhost:8001/api/start/job_1/group_1/10/5
+```
+
+- Visit `<ip>:<port>/api/start/{jobName}/{groupName}/{quantity}/{interval}` to remove existing job.
+
+E.g.
+```
+curl localhost:8002/api/stop/job_1/group_1
+```
+
+> **Tip:** Be careful with the jobName and triggerName.
+> If you define a new job using existing group-and-job-name, or define a new trigger using existing group-and-trigger-name, it would not take effect.
