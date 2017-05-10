@@ -1,4 +1,4 @@
-package com.example;
+package com.cluster.config;
 
 import javax.sql.DataSource;
 
@@ -21,8 +21,8 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
-import com.example.job.SampleJob;
-import com.example.spring.AutowiringSpringBeanJobFactory;
+import com.cluster.job.HelloJob;
+import com.cluster.spring.AutowiringSpringBeanJobFactory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -41,7 +41,9 @@ public class SchedulerConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource, JobFactory jobFactory, @Qualifier("sampleJobTrigger") Trigger sampleJobTrigger) throws IOException {
+    public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource, JobFactory jobFactory,
+                                                     @Qualifier("sampleJobTrigger") Trigger sampleJobTrigger)
+            throws IOException {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         // this allows to update triggers in DB when updating settings in config file:
         factory.setOverwriteExistingJobs(true);
@@ -62,11 +64,12 @@ public class SchedulerConfig {
 
     @Bean
     public JobDetailFactoryBean sampleJobDetail() {
-        return createJobDetail(SampleJob.class);
+        return createJobDetail(HelloJob.class);
     }
 
     @Bean(name = "sampleJobTrigger")
-    public SimpleTriggerFactoryBean sampleJobTrigger(@Qualifier("sampleJobDetail") JobDetail jobDetail, @Value("${samplejob.frequency}") long frequency) {
+    public SimpleTriggerFactoryBean sampleJobTrigger(@Qualifier("sampleJobDetail") JobDetail jobDetail,
+                                                     @Value("${samplejob.frequency}") long frequency) {
         return createTrigger(jobDetail, frequency);
     }
 

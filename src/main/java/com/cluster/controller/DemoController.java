@@ -1,5 +1,6 @@
-package com.example.rest;
+package com.cluster.controller;
 
+import com.cluster.job.HelloJob;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,17 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.quartz.JobBuilder.*;
-import static org.quartz.TriggerBuilder.*;
-import static org.quartz.SimpleScheduleBuilder.*;
-
-import com.example.job.SampleJob;
-import com.example.service.SampleService;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 @RestController
-public class WelcomeController {
+public class DemoController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SampleService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DemoController.class);
 
     @Autowired
     private SchedulerFactoryBean schedulerFactory;
@@ -46,7 +44,7 @@ public class WelcomeController {
                           @PathVariable("quantity") int quantity,
                           @PathVariable("interval") int interval) {
         Scheduler scheduler = schedulerFactory.getScheduler();
-        JobDetail job = newJob(SampleJob.class)
+        JobDetail job = newJob(HelloJob.class)
               .withIdentity(jobName, groupName)
               .build();
 

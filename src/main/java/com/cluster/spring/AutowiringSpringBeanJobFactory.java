@@ -1,4 +1,4 @@
-package com.example.spring;
+package com.cluster.spring;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
