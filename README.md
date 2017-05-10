@@ -1,11 +1,11 @@
 # quartz-springboot-culster
 Proof of concept for clustered Quartz using Spring Boot and MySQL
 
-Based on ka4ok85/quartz-springboot-mysql
+Based on [ka4ok85/quartz-springboot-mysql](https://github.com/ka4ok85/quartz-springboot-mysql)
 
 ## How to run
 
-1. Create a MySQL instance.
+1. Create a MySQL instance (E.g. using docker).
 ```
 docker run -d --name mysql --net=host -e MYSQL_ROOT_PASSWORD=root mysql
 ```
@@ -27,7 +27,7 @@ mvn spring-boot:run -Dspring.profiles.active=ins2
 或
 ```
 java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins1
-java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins1
+java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins2
 ```
 
 5. Open localhost:8080/api/start/{jobName}/{groupName}/{quantity}/{interval} in Browser (e.g. localhost:8080/api/start/job_1/group_1/10/5)
