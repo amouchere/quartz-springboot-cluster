@@ -1,6 +1,6 @@
 package com.example.rest;
 
-import org.quartz.JobDetail;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
@@ -27,6 +24,20 @@ public class WelcomeController {
 
     @Autowired
     private SchedulerFactoryBean schedulerFactory;
+
+    @RequestMapping(value = "/api/stop/{jobName}/{groupName}",
+            method = RequestMethod.GET, produces = "application/json")
+    public Boolean removeJob(@PathVariable("jobName") String jobName,
+                          @PathVariable("groupName") String groupName) {
+        Scheduler scheduler = schedulerFactory.getScheduler();
+        try {
+            scheduler.deleteJob(new JobKey(jobName, groupName));
+            return true;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     @RequestMapping(value = "/api/start/{jobName}/{groupName}/{quantity}/{interval}",
             method = RequestMethod.GET, produces = "application/json")

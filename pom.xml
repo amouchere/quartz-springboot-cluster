@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>quartz-springboot-mysql</artifactId>
+    <artifactId>quartz-springboot-cluster</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>quartz-springboot-mysql</name>
-    <description>Proof of concept for persisted Quartz using Spring Boot and MySQL</description>
+    <name>quartz-springboot-cluster</name>
+    <description>Proof of concept for clustered Quartz using Spring Boot and MySQL</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

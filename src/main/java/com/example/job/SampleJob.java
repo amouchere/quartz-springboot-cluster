@@ -12,6 +12,6 @@ public class SampleJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        service.hello();
+        service.hello(jobExecutionContext.getJobDetail().getKey().getName());
     }
 }
