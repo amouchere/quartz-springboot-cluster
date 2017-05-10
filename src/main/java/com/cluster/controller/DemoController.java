@@ -1,7 +1,9 @@
 package com.cluster.controller;
 
 import com.cluster.job.HelloJob;
+import com.google.common.collect.ImmutableMap;
 import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -22,6 +29,28 @@ public class DemoController {
 
     @Autowired
     private SchedulerFactoryBean schedulerFactory;
+
+    @RequestMapping(value = "/api/list",
+            method = RequestMethod.GET, produces = "application/json")
+    public List listJobs() throws SchedulerException {
+        Scheduler scheduler = schedulerFactory.getScheduler();
+        Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.anyGroup());
+        List<Map<String, String>> jobInfoList = new ArrayList<>();
+        jobKeys.forEach(jobKey -> {
+            try {
+                JobDetail detail = scheduler.getJobDetail(jobKey);
+                scheduler.getTriggersOfJob(jobKey).forEach(trigger -> {
+                    jobInfoList.add(ImmutableMap.of("job", detail.getKey().toString(),
+                            "jobClass", detail.getJobClass().toString(),
+                            "trigger", trigger.getKey().toString(),
+                            "nextTriggerTime", trigger.getNextFireTime().toString()));
+                });
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+            }
+        });
+        return jobInfoList;
+    }
 
     @RequestMapping(value = "/api/stop/{jobName}/{groupName}",
             method = RequestMethod.GET, produces = "application/json")
