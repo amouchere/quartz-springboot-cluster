@@ -28,9 +28,9 @@ mvn spring-boot:run -Dspring.profiles.active=ins3
 ```
 Or
 ```
-java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins1
-java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins2
-java -jar quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins3
+java -jar target/quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins1
+java -jar target/quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins2
+java -jar target/quartz-springboot-cluster-1.0.0-SNAPSHOT.jar --spring.profiles.active=ins3
 ```
 
 #### 5. Check the output of each instance, the jobs will be dispatch to each instance randomly.

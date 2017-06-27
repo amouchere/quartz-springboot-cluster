@@ -42,7 +42,7 @@ public class SchedulerConfig {
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource, JobFactory jobFactory,
-                                                     @Qualifier("sampleJobTrigger") Trigger sampleJobTrigger)
+                                                     @Qualifier("simpleJobTrigger") Trigger simpleJobTrigger)
             throws IOException {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         // this allows to update triggers in DB when updating settings in config file:
@@ -63,13 +63,13 @@ public class SchedulerConfig {
     }
 
     @Bean
-    public JobDetailFactoryBean sampleJobDetail() {
+    public JobDetailFactoryBean simpleJobDetail() {
         return createJobDetail(HelloJob.class);
     }
 
-    @Bean(name = "sampleJobTrigger")
-    public SimpleTriggerFactoryBean sampleJobTrigger(@Qualifier("sampleJobDetail") JobDetail jobDetail,
-                                                     @Value("${samplejob.frequency}") long frequency) {
+    @Bean(name = "simpleJobTrigger")
+    public SimpleTriggerFactoryBean simpleJobTrigger(@Qualifier("simpleJobDetail") JobDetail jobDetail,
+                                                     @Value("${simplejob.frequency}") long frequency) {
         return createTrigger(jobDetail, frequency);
     }
 
